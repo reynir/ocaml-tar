@@ -567,7 +567,7 @@ module HeaderReader(Async: ASYNC)(Reader: READER with type 'a t = 'a Async.t) = 
           return (Error `Eof)
         | Some x -> return (Ok x)
         end
-      | Some x when x.Header.link_indicator = Header.Link.LongLink && x.Header.file_name = longlink ->
+      | Some x when x.Header.link_indicator = Header.Link.LongLink || x.Header.file_name = longlink ->
         let extra_header_buf = Cstruct.create (Int64.to_int x.Header.file_size) in
         really_read ifd extra_header_buf
         >>= fun () ->
